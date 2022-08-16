@@ -1,0 +1,82 @@
+package TestNG;
+
+import java.time.Duration;
+import java.util.Scanner;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+
+public class NewTest 
+{
+	
+
+	static WebDriver driver;
+
+  @BeforeTest
+  public void OpenWebsite() throws InterruptedException 
+  {
+	  System.setProperty("webdriver.chrome.driver", "C:\\Users\\4124\\Desktop\\chromedriver.exe");
+	  driver = new ChromeDriver();
+	  String baseUrl = "https://www.globalsqa.com/angularJs-protractor/BankingProject";
+	  driver.get(baseUrl);
+      driver.manage().window().maximize();
+
+	  Thread.sleep(4000);
+  }
+  @Test (priority=1)
+  public void managerLogin()
+  {
+	  driver.findElement(By.xpath("//div[@class='center']//button[text()='Bank Manager Login']")).click();
+  }
+  @Test (priority=2)
+  public void addCustomer()
+  {	  
+	  WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+	  wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='center']//button[@ng-click='addCust()']"))).click();
+	  try (Scanner sc = new Scanner(System.in)) {
+		System.out.println("Enter First Name: ");
+		  String firstName = sc.next();
+		  System.out.println("First Name: " + firstName);
+		  System.out.print("Enter Last Name: ");
+		  String lastName = sc.next();
+		  System.out.println("Last Name: " + lastName);
+		  System.out.print("Enter Post Code: ");
+		  String postCode = sc.next();
+		  System.out.println("First Name: " + postCode);
+		  wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//form//div//input[@placeholder='First Name']"))).sendKeys(firstName);  
+		  driver.findElement(By.xpath("//form//div//input[@placeholder='Last Name']")).sendKeys(lastName); 
+		  driver.findElement(By.xpath("//form//div//input[@placeholder='Post Code']")).sendKeys(postCode);
+	}
+	  driver.findElement(By.xpath("//div//button[@type='submit']")).click();
+	  driver.switchTo().alert().accept();
+  }
+  @Test (priority=3)
+  public void openAccount()
+  {	  
+	  WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+	  wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='center']//button[@ng-click='openAccount()']"))).click();
+	  try (Scanner sc = new Scanner(System.in)) {
+		System.out.println("Enter User Name to Select: ");
+		  String name = sc.next();
+		  System.out.println("Name: " + name);
+		  wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='center']//button[@ng-click='openAccount()']"))).click();
+		  Select user= new Select(driver.findElement(By.xpath("//select[@name='userSelect']")));
+		  user.selectByVisibleText(name);
+	}
+  }
+
+  @AfterTest
+  public void quitWebsite() throws InterruptedException 
+  {
+	  //System.out.print("Exiting....");
+	  //Thread.sleep(4000);
+	  //driver.quit();
+  }
+}

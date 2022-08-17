@@ -1,0 +1,280 @@
+package TestNG;
+
+import java.util.List;
+import java.util.Scanner;
+import java.util.Set;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.Select;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+
+public class NewTest 
+{
+	static WebDriver driver;
+	@BeforeTest
+	public void checkWebsiteLoad() 
+	{
+		System.setProperty("webdriver.chrome.driver", "C:\\Users\\Ahmer Aziz\\Desktop\\chromedriver.exe");
+		driver = new ChromeDriver();
+		String baseUrl = "https://omayo.blogspot.in/";
+		System.out.println("Website Opens...");
+		driver.get(baseUrl);
+		//driver.manage().window().maximize();
+	}
+	@Test(priority=1)
+	public void textArea1() 
+	{
+		try (Scanner sc = new Scanner(System.in)) {
+			//System.out.print("Enter Name: ");
+			//String userName = sc.nextLine();
+			//System.out.println("Username is: " + userName);	
+			System.out.println("Clear Text Area 1 and Send Username to Text Area 1...");
+			driver.findElement(By.xpath("//h2[text()='Text Area Field']//following-sibling::div[@class='widget-content']//child::textarea")).clear();
+			driver.findElement(By.xpath("//h2[text()='Text Area Field']//following-sibling::div[@class='widget-content']//child::textarea")).sendKeys("Ahmer Aziz");
+		}
+		
+	}
+	@Test(priority=2)
+	public void textArea2() 
+	{
+		System.out.println("Print Textarea 2 Text, Clear And Send Intro in the Text Field...");
+		String str = driver.findElement(By.xpath("//h2[contains(text(),'Two')]//following-sibling::div[@class='widget-content']//child::textarea")).getText();
+		System.out.println("Text Area 2 text: " + str);
+		driver.findElement(By.xpath("//h2[text()='Text Area Field Two']//following-sibling::div[@class='widget-content']//child::textarea")).clear();
+		driver.findElement(By.xpath("//h2[text()='Text Area Field Two']//following-sibling::div[@class='widget-content']//child::textarea")).sendKeys("My Name is Ahmer Aziz.");
+	}
+	@Test(priority=3)
+	public void tableData() 
+	{
+		System.out.println("Print Table Content...");
+		List<WebElement> allRows = driver.findElements(By.xpath("//h2[text()='Table']//following-sibling::div[@class='widget-content']//child::table"));
+		for (WebElement row : allRows) 
+		{
+			List<WebElement> cells = row.findElements(By.tagName("tr"));
+			for (WebElement cell : cells) 
+			{
+				System.out.println(cell.getText());
+			}
+		}
+	}
+	
+	@Test(priority=4)
+	public void userLogin() 
+	{
+		System.out.println("Send User name and password in fields...");
+		driver.findElement(By.xpath("//h2[text()='HTML Form']//following-sibling::div[@class='widget-content']//form//input[@type='text']")).sendKeys("ahmeraziz95");
+		driver.findElement(By.xpath("//h2[text()='HTML Form']//following-sibling::div[@class='widget-content']//form//input[@type='password']")).sendKeys("ahmeraziz95");
+		driver.findElement(By.xpath("//h2[text()='HTML Form']//following-sibling::div[@class='widget-content']//form//button")).click();
+	}
+	
+	@Test(priority=5)
+	public void frameSwitch() 
+	{
+		System.out.println("Switching Frames...");
+		WebElement frame1 = driver.findElement(By.xpath("//div[@class='widget-content']//iframe[@id='iframe1']"));
+		driver.switchTo().frame(frame1);
+		driver.switchTo().defaultContent();
+		WebElement frame2 = driver.findElement(By.xpath("//div[@class='widget-content']//iframe[@id='iframe2']"));
+		driver.switchTo().frame(frame2);
+		driver.switchTo().defaultContent();
+	}
+	@Test(priority=6)
+	public void simpleLogin() 
+	{
+		System.out.println("Send User name and password in fields and Click Login Button...");
+		driver.findElement(By.xpath("//form[@name='login']//input[@name='userid']")).sendKeys("ahmeraziz95");
+		driver.findElement(By.xpath("//form[@name='login']//input[@name='pswrd']")).sendKeys("ahmeraziz95");
+		driver.findElement(By.xpath("//form[@name='login']//input[@value='Login']")).click();
+		driver.switchTo().alert().accept();
+		System.out.println("Clear login Fields...");
+		driver.findElement(By.xpath("//form[@name='login']//input[@value='Cancel']")).click();
+	}
+	@Test(priority=7)
+	public void multiSelect() 
+	{
+		System.out.println("Select Hyndai and Doc3...");
+		Select car = new Select(driver.findElement(By.xpath("//h2[text()='Multi Selection box']//following-sibling::div[@class='widget-content']//select")));
+		car.selectByVisibleText("Hyundai");
+		Select newsletter = new Select(driver.findElement(By.xpath("//div[@class='widget HTML']//following-sibling::div[@class='widget-content']//select[@class='combobox']")));
+		newsletter.selectByVisibleText("doc 3");
+	}
+	@Test(priority=8)
+	public void textField3() 
+	{
+		System.out.println("Clear and Send Text into Textfield...");
+		driver.findElement(By.xpath("//div[@class='widget-content']//input[@name='fname']")).clear();
+		driver.findElement(By.xpath("//div[@class='widget-content']//input[@name='fname']")).sendKeys("Hello");
+	}
+	@Test(priority=9)
+	public void clickButton2() 
+	{
+		System.out.println("Click Button 2...");
+		driver.findElement(By.xpath("//div[@class='widget-content']//button[@id='but2']")).click();
+	}
+	@Test(priority=10)
+	public void threeButtons() 
+	{
+		System.out.println("Click Submit Login and Register Button...");
+		List<WebElement> btn = driver.findElements(By.xpath("//div[@class='widget-content']//button[@name='samename']"));
+		for(WebElement element: btn)
+	    {
+	         element.click();
+	    }
+	}
+	@Test(priority=11)
+	public void alertHandle() 
+	{
+		System.out.println("Click Button and Handle Alert...");
+		driver.findElement(By.xpath("//div[@class='widget-content']//input[@value='ClickAfterTextDissappears']")).click();
+		driver.switchTo().alert().accept();
+	}
+	@Test(priority=12)
+	public void windowSwitching() throws InterruptedException 
+	{
+		System.out.println("Handle Switching Between Windows and Print Paragraph Texts...");
+		String mainWindow=driver.getWindowHandle();
+		driver.findElement(By.xpath("//div[@class='widget-content']//a[text()='Open a popup window']")).click();
+		Set<String> handles=driver.getWindowHandles();
+		for(String handle: handles)
+		{
+			driver.switchTo().window(handle);
+		}
+		Thread.sleep(2000);
+		driver.manage().window().maximize();
+		WebElement p1 = driver.findElement(By.xpath("//body/child::p[@id='para1']"));
+		String para1 = p1.getText();
+		System.out.println(para1);
+		WebElement p2 = driver.findElement(By.xpath("//body/child::p[@id='para2']"));
+		String para2 = p2.getText();
+		System.out.println(para2);
+		Thread.sleep(3000);
+		driver.close();
+		driver.switchTo().window(mainWindow);
+	}
+	@Test(priority=13)
+	public void tryIt() 
+	{
+		driver.findElement(By.xpath("//div[@class='widget-content']//button[text()='Try it']")).click();
+		System.out.println("Try It Button Clicked...");
+	}
+	@Test(priority=14)
+	public void doubleClick() throws InterruptedException 
+	{
+		Actions act = new Actions(driver);
+		System.out.println("Double Clicked...");
+		WebElement ele = driver.findElement(By.xpath("//div[@class='widget-content']//button[text()=' Double click Here   ']")); 
+		act.doubleClick(ele).perform();
+		Thread.sleep(2000);
+		driver.switchTo().alert().accept();
+	}
+	@Test(priority=15)
+	public void checkox() throws InterruptedException 
+	{
+		System.out.print("Wait 10 sec and click on checkbox...");
+		driver.findElement(By.xpath("//div[@class='widget-content']//button[text()='Check this']")).click();
+		Thread.sleep(11000);
+		driver.findElement(By.xpath("//div[@class='widget-content']//input[@id='dte']")).click();
+		Thread.sleep(2000);
+	}
+	@Test(priority=16)
+	public void selectGender()
+	{
+		System.out.println("Select Gender...");
+		WebElement gender = driver.findElement(By.xpath("//div[@class='widget-content']//input[@type='radio' and @name='gender']"));
+		if(!gender.isSelected())
+		{
+		    gender.click();
+		}
+	}
+	@Test(priority=16)
+	public void clickAlert()
+	{
+		System.out.println("Select Alert and Accept...");
+		driver.findElement(By.xpath("//div[@class='widget-content']//input[@value='ClickToGetAlert']")).click();
+		driver.switchTo().alert().accept();
+	}
+	@Test(priority=17)
+	public void selectColor() throws InterruptedException
+	{
+		System.out.println("Unchecked Orange and Checked Blue...");
+		WebElement checkbox = driver.findElement(By.xpath("//div[@class='widget-content']//input[@value='orange']"));
+	    checkbox.click();
+	    System.out.println("Orange UnChecked");
+	    WebElement check1 = driver.findElement(By.xpath("//div[@class='widget-content']//input[@value='blue']"));
+	    check1.click();
+	    System.out.println("Blue Checked");
+		Thread.sleep(2000);
+	}
+	@Test(priority=18)
+	public void readTextbox()
+	{
+		System.out.println("Read Text from Textbox...");
+	    WebElement str1 = driver.findElement(By.xpath("//div[@class='widget-content']//input[@value='ReadThisText']"));
+		String text= str1.getAttribute("value");
+	    System.out.println("Text Area text: " + text);  
+	}
+	@Test(priority=19)
+	public void getPrompt()
+	{
+		System.out.println("Click on Get Prompt and Send User Name...");
+		driver.findElement(By.xpath("//div[@class='widget-content']//input[@value='GetPrompt']")).click();
+		driver.switchTo().alert().sendKeys("Ahmer Aziz");
+		driver.switchTo().alert().accept();  
+	}
+	@Test(priority=20)
+	public void getConfirmation()
+	{
+		System.out.println("Click on Get Coonfirmation and Handle Alert...");
+		driver.findElement(By.xpath("//div[@class='widget-content']//input[@value='GetConfirmation']")).click();
+		driver.switchTo().alert().accept();
+	}
+	@Test(priority=21)
+	public void sendData()
+	{
+		System.out.println("Send Data in Text Field...");
+		driver.findElement(By.xpath("//h2[text()='Locate using class']//following-sibling::div[@class='widget-content']//input[@class='classone']")).sendKeys("Class");
+		driver.findElement(By.xpath("//h2[text()='element having same class name of above field']//following-sibling::div[@class='widget-content']//input[@class='classone']")).sendKeys("Class Having Same Name");
+	}
+	@Test(priority=22)
+	public void selectCar()
+	{
+		System.out.println("Select Car...");
+		driver.findElement(By.xpath("//div[@class='widget-content']//input[@value='Car']")).click();
+	}
+	@Test(priority=23)
+	public void selectBook()
+	{
+		Actions act = new Actions(driver);
+		System.out.println("Unchecked, Checked Book and then Select Bag and Select Book...");
+		WebElement b1 = driver.findElement(By.xpath("//div[@class='widget-content']//input[@value='Book']")); 
+		act.doubleClick(b1).perform();
+		driver.findElement(By.xpath("//div[@class='widget-content']//input[@value='Bag']")).click();
+		driver.findElement(By.xpath("//div[@class='widget-content']//input[@value='Book']")).click(); 
+	}
+	@Test(priority=24)
+	public void dropDown()
+	{
+		Actions act = new Actions(driver);
+		System.out.println("Double Click on Dropown Button...");
+		WebElement dropDown = driver.findElement(By.xpath("//div[@class='dropdown']//button")); 
+		act.doubleClick(dropDown).perform();
+	}
+	@Test(priority=25)
+	public void picUpload()
+	{
+		System.out.println("Upload Picture...");
+		driver.findElement(By.xpath("//div[@class='widget-content']//form//input[@id='uploadfile']")).sendKeys("C:\\Users\\4124\\Desktop\\html-assignment\\banner.png"); 
+	}
+	@AfterTest
+	public void exitWebsite() 
+	{
+		driver.quit();
+	}
+}
+https://www.softwaretestingmaterial.com/create-selenium-maven-project/

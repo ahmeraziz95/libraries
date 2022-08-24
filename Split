@@ -1,0 +1,10 @@
+String user1="Sayam Zafar";
+        String user2="Zafar,Sayam";
+        String[] arrOfStr = user1.split(" ");
+        String[] arrOfStr2 = user2.split(",");
+        if ((arrOfStr2[1].equals(arrOfStr[0])) && (arrOfStr2[0].equals(arrOfStr[1]))) {
+            System.out.println("Matched");
+        }
+        else {
+            System.out.println("Not Matched");
+        }

@@ -1,4 +1,4 @@
-package TestNG;
+package com.maven.maven;
 
 import java.util.List;
 import java.util.Scanner;
@@ -10,6 +10,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
+import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -20,24 +21,26 @@ public class NewTest
 	@BeforeTest
 	public void checkWebsiteLoad() 
 	{
-		System.setProperty("webdriver.chrome.driver", "C:\\Users\\Ahmer Aziz\\Desktop\\chromedriver.exe");
+		System.setProperty("webdriver.chrome.driver", "C:\\\\Users\\\\4124\\\\Desktop\\\\chromedriver.exe");
 		driver = new ChromeDriver();
 		String baseUrl = "https://omayo.blogspot.in/";
 		System.out.println("Website Opens...");
 		driver.get(baseUrl);
-		//driver.manage().window().maximize();
+		driver.manage().window().maximize();
+		String actual = driver.getTitle();
+		String expected = "omayo (QAFox.com)";
+		Assert.assertEquals(expected, actual);
+		System.out.println("actual Result...");
+
 	}
 	@Test(priority=1)
 	public void textArea1() 
 	{
-		try (Scanner sc = new Scanner(System.in)) {
-			//System.out.print("Enter Name: ");
-			//String userName = sc.nextLine();
-			//System.out.println("Username is: " + userName);	
+		
 			System.out.println("Clear Text Area 1 and Send Username to Text Area 1...");
 			driver.findElement(By.xpath("//h2[text()='Text Area Field']//following-sibling::div[@class='widget-content']//child::textarea")).clear();
 			driver.findElement(By.xpath("//h2[text()='Text Area Field']//following-sibling::div[@class='widget-content']//child::textarea")).sendKeys("Ahmer Aziz");
-		}
+		
 		
 	}
 	@Test(priority=2)
@@ -277,4 +280,4 @@ public class NewTest
 		driver.quit();
 	}
 }
-https://www.softwaretestingmaterial.com/create-selenium-maven-project/
+
